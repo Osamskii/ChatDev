@@ -450,3 +450,26 @@ Detailed descriptions and experiment results about this Experiential Co-Evolving
     If you add and commit the software log file under the software folder, there will be no ``Changes not staged for commit:``
   - Some phase executions may not change the code, and thereby there is no commit. For example, the software is tested without problems and there is no modification, so the test phase would leave no commit.
   
+## Integracja lokalnych modeli
+ChatDev obs\u0142uguje serwery zgodne z API OpenAI. Aby skorzysta\u0107 z lokalnego serwera Ollama ustaw zmienn\u0105 \u015brodowiskow\u0105 `OPENAI_API_BASE` wskazuj\u0105c\u0105 na adres np. `http://localhost:11434/v1`.
+
+```bash
+export OPENAI_API_BASE="http://localhost:11434/v1"
+export OPENAI_API_KEY="none"  # je\u015bli serwer nie wymaga klucza
+```
+
+Nast\u0119pnie ca\u0142y kod korzystaj\u0105cy z biblioteki OpenAI automatycznie skieruje zapytania na lokalny serwer. Przyk\u0142adowe zapytanie:
+
+```python
+import os
+import openai
+
+client = openai.OpenAI(base_url=os.getenv("OPENAI_API_BASE"), api_key=os.getenv("OPENAI_API_KEY"))
+resp = client.chat.completions.create(
+    model="llama3",
+    messages=[{"role": "user", "content": "Hello, world!"}]
+)
+print(resp.choices[0].message.content)
+```
+
+
